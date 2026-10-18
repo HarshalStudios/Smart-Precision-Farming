@@ -119,7 +119,7 @@ export default function App() {
   const changePage = (p: Page) => { setPage(p); setMobileNav(false); setQuery('') }
   const patchStore = (patch: Partial<Store>) => setStore(prev => ({ ...prev, ...patch }))
   const upsert = <T extends {id:string}>(key: 'farms'|'crops'|'devices'|'users', item: T) => {
-    setStore(prev => ({ ...prev, [key]: (prev[key] as T[]).some(x => x.id === item.id) ? (prev[key] as T[]).map(x => x.id === item.id ? item : x) : [...prev[key] as T[], item] }) as Store)
+    setStore(prev => ({ ...prev, [key]: (prev[key] as unknown as T[]).some(x => x.id === item.id) ? (prev[key] as unknown as T[]).map(x => x.id === item.id ? item : x) : [...(prev[key] as unknown as T[]), item] }) as Store)
     setModal(null); setEditId(null); setForm({}); notify('Changes saved successfully')
   }
   const openForm = (kind: 'farm'|'crop'|'device'|'user', id?: string) => {
